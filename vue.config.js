@@ -41,7 +41,7 @@ module.exports = {
     proxy: {
       //配置跨域
       '/shiro': {//url跨域请求标识(可使用正则表达式) 例：http://localhost:8086/api/*就会进行跨域操作
-        target: "http://localhost:8083",//将原域名改为该url(跨域)
+        target: "http://localhost:8087",//将原域名改为该url(跨域)
         ws:true,
         changOrigin:true,
         pathRewrite:{
