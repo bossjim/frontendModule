@@ -1,7 +1,11 @@
 import axios from 'axios'
-
+import {Modal, notification} from 'ant-design-vue'
+import moment from 'moment'
+import store from '../store'
+import db from 'utils/localstorage'
+moment.locale('zh-cn')
 // 统一配置
-axios.create({
+let FEBS_REQUEST = axios.create({
   baseURL: 'http://127.0.0.1:9527/',
   responseType: 'json',
   validateStatus (status) {
@@ -9,4 +13,86 @@ axios.create({
     return status === 200
   }
 })
-// export default request
+
+// 拦截请求
+FEBS_REQUEST.interceptors.request.use((config) => {
+  let expireTime = store.state.account.expireTime
+  let now = moment().format('YYYYMMDDHHmmss')
+  // 让token早10秒钟过期，提升“请重新登录”弹窗体验
+  if (now - expireTime >= -10) {
+    Modal.error({
+      title: '登录已过期',
+      content: '很抱歉，登录已过期，请重新登录',
+      okText: '重新登录',
+      mask: false,
+      onOk: () => {
+        return new Promise((resolve, reject) => {
+          db.clear()
+          location.reload()
+        })
+      }
+    })
+  }
+  // 有 token就带上
+  if (store.state.account.token) {
+    config.headers.Authentication = store.state.account.token
+  }
+  return config
+}, (error) => {
+  return Promise.reject(error)
+})
+
+// 拦截响应
+FEBS_REQUEST.interceptors.response.use((config) => {
+  return config
+}, (error) => {
+  if (error.response) {
+    let errorMessage = error.response.data === null ? '系统内部异常，请联系网站管理员' : error.response.data.message
+    switch (error.response.status) {
+      case 404:
+        notification.error({
+          message: '系统提示',
+          description: '很抱歉，资源未找到',
+          duration: 4
+        })
+        break
+      case 403:
+      case 401:
+        notification.warn({
+          message: '系统提示',
+          description: '很抱歉，您无法访问该资源，可能是因为没有相应权限或者登录已失效',
+          duration: 4
+        })
+        break
+      default:
+        notification.error({
+          message: '系统提示',
+          description: errorMessage,
+          duration: 4
+        })
+        break
+    }
+  }
+  return Promise.reject(error)
+})
+
+const request = {
+  post (url, params) {
+    return FEBS_REQUEST.post(url, params, {
+      transformRequest: [(params) => {
+        let result = ''
+        Object.keys(params).forEach((key) => {
+          if (!Object.is(params[key], undefined) && !Object.is(params[key], null)) {
+            result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&'
+          }
+        })
+        return result
+      }],
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+  }
+}
+
+export default request

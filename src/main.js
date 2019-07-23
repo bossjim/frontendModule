@@ -2,6 +2,7 @@ import Vue from 'vue'
 import DEER from './DEER'
 import store from './store'
 import router from './router'
+import request from 'utils/request'
 import db from 'utils/localstorage'
 import Antd from 'ant-design-vue'
 import VueApexCharts from 'vue-apexcharts'
@@ -17,6 +18,8 @@ Vue.use({
     Vue.prototype.$db = db
   }
 })
+
+Vue.prototype.$post = request.post
 
 Vue.component('apexchart', VueApexCharts)
 /* eslint-disable no-new */
