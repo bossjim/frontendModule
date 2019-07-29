@@ -6,7 +6,7 @@ import db from 'utils/localstorage'
 moment.locale('zh-cn')
 // 统一配置
 let FEBS_REQUEST = axios.create({
-  baseURL: 'http://127.0.0.1:9527/',
+  baseURL: 'http://127.0.0.1:9528/',
   responseType: 'json',
   validateStatus (status) {
     // 200 外的状态码都认定为失败
@@ -92,6 +92,20 @@ const request = {
         'Content-Type': 'application/x-www-form-urlencoded'
       }
     })
+  },
+  get (url, params) {
+    let _params
+    if (Object.is(params, undefined)) {
+      _params = ''
+    } else {
+      _params = '?'
+      for (let key in params) {
+        if (params.hasOwnProperty(key) && params[key] !== null) {
+          _params += `${key}=${params[key]}&`
+        }
+      }
+    }
+    return FEBS_REQUEST.get(`${url}${_params}`)
   }
 }
 

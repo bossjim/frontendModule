@@ -38,24 +38,9 @@ export default {
       default: true
     }
   },
-  mounted () {
-    this.drawerWidth = this.getDrawerWidth()
-  },
-  watch: {
-    'drawerWidth': function (val) {
-      if (this.placement === 'left') {
-        this.$refs.handler.style.left = val + 'px'
-      } else {
-        this.$refs.handler.style.right = val + 'px'
-      }
-    }
-  },
   methods: {
     close () {
       this.setSettingBar(false)
-    },
-    getDrawerWidth () {
-      return this.$refs.drawer.clientWidth
     },
     ...mapMutations({setSettingBar: 'setting/setSettingBar'})
   }
