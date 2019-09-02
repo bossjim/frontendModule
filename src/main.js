@@ -20,6 +20,7 @@ Vue.use({
 })
 
 Vue.prototype.$post = request.post
+Vue.prototype.$get = request.get
 
 Vue.component('apexchart', VueApexCharts)
 /* eslint-disable no-new */

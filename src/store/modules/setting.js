@@ -3,9 +3,13 @@ import db from 'utils/localstorage'
 export default {
   namespaced: true,
   state: {
+    sidebar: {
+      opened: true
+    },
     settingBar: {
       opened: false
     },
+    isMobile: false,
     systemName: 'DEER 权限系统',
     copyright: `${new Date().getFullYear()} <a href="https://github.com/bossjim/frontendModule" target="_blank">JimBoss</a>`,
     theme: db.get('THEME', 'light'),
@@ -16,6 +20,9 @@ export default {
     color: db.get('COLOR', 'rgb(24, 144, 255)')
   },
   mutations: {
+    setDevice (state, isMobile) {
+      state.isMobile = isMobile
+    },
     setTheme (state, theme) {
       db.save('THEME', theme)
       state.theme = theme
@@ -27,6 +34,9 @@ export default {
     setMultipage (state, multipage) {
       db.save('MULTIPAGE', multipage)
       state.multipage = multipage
+    },
+    setSidebar (state, type) {
+      state.sidebar.opened = type
     },
     fixSiderbar (state, flag) {
       db.save('FIX_SIDERBAR', flag)
