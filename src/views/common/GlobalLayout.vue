@@ -4,6 +4,18 @@
       <sider-menu :theme="theme" :menuData="menuData" :collapsed="false" :collapsible="false" @menuSelect="onMenuSelect"/>
     </drawer>
     <sider-menu :theme="theme" v-else-if="layout === 'side'" :menuData="menuData" :collapsed="collapsed" :collapsible="true" />
+    <drawer :open-drawer="settingBar" placement="right">
+      <setting />
+    </drawer>
+    <a-layout :style="{ paddingLeft: paddingLeft }">
+      <global-header :menuData="menuData" :collapsed="collapsed" @toggleCollapse="toggleCollapse"/>
+      <a-layout-content :style="{minHeight: minHeight, margin: '20px 14px 0'}" :class="fixHeader ? 'fixed-header-content' : null">
+        <slot></slot>
+      </a-layout-content>
+      <a-layout-footer style="padding: .29rem 0" class="copyright">
+        <global-footer :copyright="copyright"/>
+      </a-layout-footer>
+    </a-layout>
   </a-layout>
 </template>
 
@@ -16,6 +28,8 @@ import Setting from '~/setting/Setting'
 import { mapState, mapMutations } from 'vuex'
 import { triggerWindowResizeEvent } from 'utils/common'
 
+const minHeight = window.innerHeight - 64 - 24 - 66
+
 let menuData = []
 
 export default {
@@ -23,12 +37,23 @@ export default {
   components: {Setting, SiderMenu, Drawer, GlobalFooter, GlobalHeader},
   data () {
     return {
+      minHeight: minHeight + 'px',
       collapsed: false,
       menuData: menuData
     }
   },
   computed: {
+    paddingLeft () {
+      return this.fixSiderbar && this.layout === 'side' && !this.isMobile ? `${this.sidebarOpened ? 256 : 80}px` : '0'
+    },
     ...mapState({
+      sidebarOpened: state => state.setting.sidebar.opened,
+      isMobile: state => state.setting.isMobile,
+      theme: state => state.setting.theme,
+      layout: state => state.setting.layout,
+      copyright: state => state.setting.copyright,
+      fixSiderbar: state => state.setting.fixSiderbar,
+      fixHeader: state => state.setting.fixHeader,
       settingBar: state => state.setting.settingBar.opened
     })
   },

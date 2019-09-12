@@ -93,6 +93,22 @@ const request = {
       }
     })
   },
+  put (url, params) {
+    return FEBS_REQUEST.put(url, params, {
+      transformRequest: [(params) => {
+        let result = ''
+        Object.keys(params).forEach((key) => {
+          if (!Object.is(params[key], undefined) && !Object.is(params[key], null)) {
+            result += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&'
+          }
+        })
+        return result
+      }],
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+  },
   get (url, params) {
     let _params
     if (Object.is(params, undefined)) {

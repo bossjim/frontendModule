@@ -70,6 +70,13 @@ export default {
     updatePassword () {
       this.updatePasswordModelVisible = true
     },
+    handleUpdate () {
+      this.updatePasswordModelVisible = false
+      this.$message.success('更新密码成功，请重新登录系统')
+      setTimeout(() => {
+        this.logout()
+      }, 1500)
+    },
     logout () {
       this.$get(`logout/${this.user.id}`).then(() => {
         return new Promise((resolve, reject) => {
