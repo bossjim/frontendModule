@@ -122,6 +122,20 @@ const request = {
       }
     }
     return FEBS_REQUEST.get(`${url}${_params}`)
+  },
+  delete (url, params) {
+    let _params
+    if (Object.is(params, undefined)) {
+      _params = ''
+    } else {
+      _params = '?'
+      for (let key in params) {
+        if (params.hasOwnProperty(key) && params[key] !== null) {
+          _params += `${key}=${params[key]}&`
+        }
+      }
+    }
+    return FEBS_REQUEST.delete(`${url}${_params}`)
   }
 }
 

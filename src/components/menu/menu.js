@@ -33,6 +33,15 @@ export default {
       cachedOpenKeys: []
     }
   },
+  computed: {
+    rootSubmenuKeys: (vm) => {
+      let keys = []
+      vm.menuData.forEach(item => {
+        keys.push(item.path)
+      })
+      return keys
+    }
+  },
   created () {
     this.updateMenu()
   },
@@ -102,6 +111,14 @@ export default {
         {key: menu.path ? menu.path : 'submenu_' + pIndex + '_' + index},
         subItem.concat(itemArr)
       )
+    },
+    onOpenChange (openKeys) {
+      const latestOpenKey = openKeys.find(key => this.openKeys.indexOf(key) === -1)
+      if (this.rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : []
+      }
     },
     updateMenu () {
       let routes = this.$route.matched.concat()

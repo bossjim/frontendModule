@@ -83,6 +83,18 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="less" scoped>
+  .setting{
+    background-color: #1890ff;
+    color: #fff;
+    border-radius: 5px 0 0 5px;
+    line-height: 40px;
+    font-size: 22px;
+    width: 40px;
+    height: 40px;
+    box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  }
+  .fixed-header-content {
+    margin: 76px 12px 0 !important;
+  }
 </style>

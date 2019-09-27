@@ -44,14 +44,18 @@
 
 <script>
 import SettingItem from './SettingItem'
+import StyleItem from './StyleItem'
 import ImgCheckbox from '../checkbox/ImgCheckbox'
 import ColorCheckbox from '../checkbox/ColorCheckbox'
 import { updateTheme } from 'utils/color'
 import {mapState, mapMutations} from 'vuex'
 
+const ColorCheckboxGroup = ColorCheckbox.Group
+const ImgCheckboxGroup = ImgCheckbox.Group
+
 export default {
   name: 'Setting',
-  components: {SettingItem, ImgCheckbox, ColorCheckbox},
+  components: {ImgCheckboxGroup, ImgCheckbox, ColorCheckboxGroup, ColorCheckbox, StyleItem, SettingItem},
   computed: {
     ...mapState({
       multipage: state => state.setting.multipage,

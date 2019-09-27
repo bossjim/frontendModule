@@ -22,6 +22,7 @@ Vue.use({
 Vue.prototype.$post = request.post
 Vue.prototype.$get = request.get
 Vue.prototype.$put = request.put
+Vue.prototype.$delete = request.delete
 
 Vue.component('apexchart', VueApexCharts)
 /* eslint-disable no-new */

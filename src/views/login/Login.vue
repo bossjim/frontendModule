@@ -96,6 +96,19 @@ export default {
           }
         })
       }
+      if (this.activeKey === '2') {
+        // 手机验证码登录
+        this.$message.warning('暂未开发')
+      }
+    },
+    regist () {
+      this.$emit('regist', 'Regist')
+    },
+    getCaptcha () {
+      this.$message.warning('暂未开发')
+    },
+    handleTabsChange (val) {
+      this.activeKey = val
     },
     ...mapMutations({
       setToken: 'account/setToken',

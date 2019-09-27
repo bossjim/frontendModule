@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import MenuView from '@/views/common/MenuView'
-// import PageView from '@/views/common/PageView'
+import PageView from '@/views/common/PageView'
 import LoginView from '@/views/login/Common'
-// import EmptyPageView from '@/views/common/EmptyPageView'
+import EmptyPageView from '@/views/common/EmptyPageView'
 import HomePageView from '@/views/HomePage'
 import db from 'utils/localstorage'
 import request from 'utils/request'
@@ -72,12 +72,12 @@ function filterAsyncRouter (routes) {
         case 'MenuView':
           route.component = MenuView
           break
-        // case 'PageView':
-        //   route.component = PageView
-        //   break
-        // case 'EmptyPageView':
-        //   route.component = EmptyPageView
-        //   break
+        case 'PageView':
+          route.component = PageView
+          break
+        case 'EmptyPageView':
+          route.component = EmptyPageView
+          break
         case 'HomePageView':
           route.component = HomePageView
           break
