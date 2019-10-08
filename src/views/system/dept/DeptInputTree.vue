@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: 'DetpInputTree',
+  name: 'DeptInputTree',
   data () {
     return {
       deptTreeData: [],

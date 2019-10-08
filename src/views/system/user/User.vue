@@ -226,6 +226,9 @@ export default {
     this.fetch()
   },
   methods: {
+    onSelectChange (selectedRowKeys) {
+      this.selectedRowKeys = selectedRowKeys
+    },
     toggleAdvanced () {
       this.advanced = !this.advanced
       if (!this.advanced) {
@@ -240,6 +243,89 @@ export default {
       this.userAdd.visiable = false
       this.$message.success('新增用户成功，初始密码为1234qwer')
       this.search()
+    },
+    edit (record) {
+      this.$refs.userEdit.setFormValues(record)
+      this.userEdit.visiable = true
+    },
+    handleUserEditClose () {
+      this.userEdit.visiable = false
+    },
+    handleUserEditSuccess () {
+      this.userEdit.visiable = false
+      this.$message.success('修改用户成功')
+      this.search()
+    },
+    handleUserInfoClose () {
+      this.userInfo.visiable = false
+    },
+    batchDelete () {
+      if (!this.selectedRowKeys.length) {
+        this.$message.warning('请选择需要删除的记录')
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '确定删除所选中的记录?',
+        content: '当您点击确定按钮后，这些记录将会被彻底删除',
+        centered: true,
+        onOk () {
+          let userIds = []
+          for (let key of that.selectedRowKeys) {
+            userIds.push(that.dataSource[key].userId)
+          }
+          that.$delete('user/' + userIds.join(',')).then(() => {
+            that.$message.success('删除成功')
+            that.selectedRowKeys = []
+            that.search()
+          })
+        },
+        onCancel () {
+          that.selectedRowKeys = []
+        }
+      })
+    },
+    resetPassword () {
+      if (!this.selectedRowKeys.length) {
+        this.$message.warning('请选择需要重置密码的用户')
+        return
+      }
+      let that = this
+      this.$confirm({
+        title: '确定重置选中用户密码?',
+        content: '当您点击确定按钮后，这些用户的密码将会重置为1234qwer',
+        centered: true,
+        onOk () {
+          let usernames = []
+          for (let key of that.selectedRowKeys) {
+            usernames.push(that.dataSource[key].username)
+          }
+          that.$put('user/password/reset', {
+            usernames: usernames.join(',')
+          }).then(() => {
+            that.$message.success('重置用户密码成功')
+            that.selectedRowKeys = []
+          })
+        },
+        onCancel () {
+          that.selectedRowKeys = []
+        }
+      })
+    },
+    exportExcel () {
+      let {sortedInfo, filteredInfo} = this
+      let sortField, sortOrder
+      // 获取当前列的排序和列的过滤规则
+      if (sortedInfo) {
+        sortField = sortedInfo.field
+        sortOrder = sortedInfo.order
+      }
+      this.$export('user/excel', {
+        sortField: sortField,
+        sortOrder: sortOrder,
+        ...this.queryParams,
+        ...filteredInfo
+      })
     },
     search () {
       let {sortedInfo, filteredInfo} = this

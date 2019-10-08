@@ -8,6 +8,7 @@ import Antd from 'ant-design-vue'
 import VueApexCharts from 'vue-apexcharts'
 
 import 'ant-design-vue/dist/antd.css'
+import 'utils/install'
 Vue.config.productionTip = false
 Vue.use(Antd)
 Vue.use(db)
@@ -23,6 +24,7 @@ Vue.prototype.$post = request.post
 Vue.prototype.$get = request.get
 Vue.prototype.$put = request.put
 Vue.prototype.$delete = request.delete
+Vue.prototype.$export = request.export
 
 Vue.component('apexchart', VueApexCharts)
 /* eslint-disable no-new */
