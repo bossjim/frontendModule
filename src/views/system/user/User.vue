@@ -236,6 +236,10 @@ export default {
         this.queryParams.createTimeTo = ''
       }
     },
+    view (record) {
+      this.userInfo.data = record
+      this.userInfo.visiable = true
+    },
     handleUserAddClose () {
       this.userAdd.visiable = false
     },
@@ -393,45 +397,30 @@ export default {
         // 数据加载完毕，关闭loading
         this.loading = false
       })
-    }
-  },
-  search () {
-    let {sortedInfo, filteredInfo} = this
-    let sortField, sortOrder
-    // 获取当前列的排序和列的过滤规则
-    if (sortedInfo) {
-      sortField = sortedInfo.field
-      sortOrder = sortedInfo.order
-    }
-    this.fetch({
-      sortField: sortField,
-      sortOrder: sortOrder,
-      ...this.queryParams,
-      ...filteredInfo
-    })
-  },
-  handleDeptChange (value) {
-    this.queryParams.deptId = value || ''
-  },
-  handleDateChange (value) {
-    if (value) {
-      this.queryParams.createTimeFrom = value[0]
-      this.queryParams.createTimeTo = value[1]
-    }
-  },
-  handleTableChange (pagination, filters, sorter) {
-    // 将这三个参数赋值给Vue data，用于后续使用
-    this.paginationInfo = pagination
-    this.filteredInfo = filters
-    this.sortedInfo = sorter
+    },
+    handleDeptChange (value) {
+      this.queryParams.deptId = value || ''
+    },
+    handleDateChange (value) {
+      if (value) {
+        this.queryParams.createTimeFrom = value[0]
+        this.queryParams.createTimeTo = value[1]
+      }
+    },
+    handleTableChange (pagination, filters, sorter) {
+      // 将这三个参数赋值给Vue data，用于后续使用
+      this.paginationInfo = pagination
+      this.filteredInfo = filters
+      this.sortedInfo = sorter
 
-    this.userInfo.visiable = false
-    this.fetch({
-      sortField: sorter.field,
-      sortOrder: sorter.order,
-      ...this.queryParams,
-      ...filters
-    })
+      this.userInfo.visiable = false
+      this.fetch({
+        sortField: sorter.field,
+        sortOrder: sorter.order,
+        ...this.queryParams,
+        ...filters
+      })
+    }
   }
 }
 </script>

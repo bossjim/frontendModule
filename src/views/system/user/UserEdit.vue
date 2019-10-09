@@ -166,17 +166,17 @@ export default {
           })
         }
       })
-    },
-    watch: {
-      userEditVisiable () {
-        if (this.userEditVisiable) {
-          this.$get('role').then((r) => {
-            this.roleData = r.data.rows
-          })
-          this.$get('dept').then((r) => {
-            this.deptTreeData = r.data.rows.children
-          })
-        }
+    }
+  },
+  watch: {
+    userEditVisiable () {
+      if (this.userEditVisiable) {
+        this.$get('role').then((r) => {
+          this.roleData = r.data.rows
+        })
+        this.$get('dept').then((r) => {
+          this.deptTreeData = r.data.rows.children
+        })
       }
     }
   }
